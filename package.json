@@ -1,0 +1,26 @@
+{
+    "name": "mongo-example",
+    "version": "1.0.0",
+    "description": "",
+    "main": "server.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "start": "node server.js",
+      "seed": "node utils/seed"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/lindsfitz/mongo-example.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+      "url": "https://github.com/lindsfitz/mongo-example/issues"
+    },
+    "homepage": "https://github.com/lindsfitz/mongo-example#readme",
+    "dependencies": {
+      "express": "^4.18.2",
+      "mongoose": "^6.7.2"
+    }
+  }
