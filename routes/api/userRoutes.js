@@ -2,7 +2,7 @@
 // TODO: update user routes
 
 const router = require('express').Router();
-const { User } = require('../../models');
+const { User, Thoughts } = require('../../models');
 
 
 router.get('/', (req, res) => {
@@ -41,7 +41,7 @@ router.delete('/:userId', (req, res) => {
         .then((user) =>
             !user
                 ? res.status(404).json({ message: 'No user with that ID' })
-                : res.json({ message: 'user removed' })
+                : Thoughts.deleteMany({ _id: { $in: user.thoughts } })
         )
         .catch((err) => res.status(500).json(err));
 })
