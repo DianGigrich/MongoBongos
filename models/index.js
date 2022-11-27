@@ -1,6 +1,6 @@
 const User = require('./User')
-const Project = require('./Project')
-const Yarn = require('./Yarn')
+const Thoughts = require('./Thought')
+const Reactions = require('./Reaction')
 
 // TODO: UPDATE 
-module.exports = { User, Project, Yarn }
+module.exports = { User, Thoughts, Reactions }

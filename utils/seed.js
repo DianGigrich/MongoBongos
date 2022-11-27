@@ -1,27 +1,24 @@
 const connection = require('../config/connection');
 
-const { User, Project } = require('../models')
-const { getRandomYarn } = require('./data');
+const { User, Thoughts } = require('../models')
+const { getRandomReaction } = require('./data');
 
-// TODO: UPDATE INFO
-const projectData = [
+const thoughtData = [
     {
-        name: 'Blanket',
-        hook: '5mm',
-        description: 'cozy'
+        thoughtText: 'Blanket',
+        username: 'Dian'
     },
     {
-        name: 'Sweater',
-        hook: '7.5mm',
-        description: 'cozy'
-    }, {
-        name: 'Beanie',
-        hook: 'H',
-        description: 'cozy'
-    }, {
-        name: 'Basket',
-        hook: '8mm',
-        description: 'cozy'
+        thoughtText: 'Another thought here',
+        username: 'Dian'
+    }, 
+    {
+        thoughtText: 'This is a great thought. It is about cats.',
+        username: 'Dian'
+    }, 
+    {
+        thoughtText: 'This thought is about hamsters and how cute they are!',
+        username: 'Dian'
     },
 ]
 
@@ -35,29 +32,30 @@ connection.once('open', async () => {
     // Drop existing users
     await User.deleteMany({});
 
-    await Project.deleteMany({})
+    await Thoughts.deleteMany({})
 
-    const projects = []
+    const thoughts = []
 
-    projectData.forEach(project => {
-        const yarns = getRandomYarn(3);
-        project.yarns = yarns;
-        projects.push(project)
+    thoughtData.forEach(thought => {
+        const reactions = getRandomReaction(3);
+        thought.reactions = reactions;
+        thoughts.push(thought)
     })
 
 
 
-    await Project.collection.insertMany(projects)
+    await Thoughts.collection.insertMany(thoughts)
 
     await User.collection.insertOne({
-        username: 'lindsfitz',
-        projects: [...projects.map(project => project._id)]
-    })
+        username: 'DianS',
+        email: "dian@diansemail.com",
+        thoughts: [...thoughts.map(thought => thought._id)]
+    });
 
 
 
     // Log out the seed data to indicate what should appear in the database
-    console.table(projects);
+    console.table(thoughts);
     console.info('Seeding complete! 🌱');
     process.exit(0);
 });
