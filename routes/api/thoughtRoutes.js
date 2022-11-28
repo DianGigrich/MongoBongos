@@ -1,6 +1,4 @@
 
-// TODO: UPDATE PROJECT
-
 const router = require('express').Router();
 const { Thoughts, User } = require('../../models');
 
@@ -34,9 +32,8 @@ router.post('/', (req, res) => {
                 { new: true })
                 .then((user) =>
                     !user
-                        ? res.status(404).json({ message: 'No user with that ID' })
+                        ? res.status(404).json({ message: 'No thoughts with that ID' })
                         : res.json(thought)
-
                 )
                 .catch((err) => res.status(500).json(err));
         })
@@ -53,6 +50,7 @@ router.put('/:thoughtId', (req, res) => {
         .catch((err) => res.status(500).json(err));
 })
 
+
 router.delete('/:thoughtId/:userId', (req, res) => {
     Thoughts.findByIdAndDelete(req.params.thoughtId)
         .then(thought => {
@@ -60,7 +58,7 @@ router.delete('/:thoughtId/:userId', (req, res) => {
                 $pull: { thoughts: req.params.thoughtId }
             }, { new: true })
                 .then(user => !user
-                    ? res.status(404).json({ message: 'No user with that ID' })
+                    ? res.status(404).json({ message: 'No thoughts with that ID' })
                     : res.json(user))
         })
 })
@@ -68,8 +66,8 @@ router.delete('/:thoughtId/:userId', (req, res) => {
 // add reaction
 router.post('/:thoughtId/reactions', (req, res) => {
     Thoughts.findOneAndUpdate(
-        { _id: req.params.userId },
-        { $addToSet: { reaction: req.body } },
+        { _id: req.params.thoughtId },
+        { $addToSet: { reactions: req.body } },
         { runValidators: true, new: true }
     )
         .then((thoughts) =>
@@ -86,8 +84,8 @@ router.post('/:thoughtId/reactions', (req, res) => {
 // delete reaction
 router.delete('/:thoughtId/reactions', (req, res) => {
     Thoughts.findOneAndUpdate(
-        { _id: req.params.userId },
-        { $pull: { reaction: { reactionId: req.params.reactionId } } },
+        { _id: req.params.thoughtId },
+        { $pull: { reactions: { reactionId: req.params.reactionId } } },
         { runValidators: true, new: true }
     )
         .then((thoughts) =>

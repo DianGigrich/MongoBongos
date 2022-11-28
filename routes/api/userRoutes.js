@@ -1,6 +1,4 @@
 
-// TODO: update user routes
-
 const router = require('express').Router();
 const { User, Thoughts } = require('../../models');
 
@@ -41,7 +39,7 @@ router.delete('/:userId', (req, res) => {
         .then((user) =>
             !user
                 ? res.status(404).json({ message: 'No user with that ID' })
-                : Thoughts.deleteMany({ _id: { $in: user.thoughts } })
+                : res.status(200).json({ message: 'user deleted' })
         )
         .catch((err) => res.status(500).json(err));
 })
@@ -50,7 +48,7 @@ router.delete('/:userId', (req, res) => {
 router.post('/:userId/friends/:friendId', (req, res) => {
     User.findOneAndUpdate(
         { _id: req.params.userId },
-        { $addToSet: { friend: req.body } },
+        { $addToSet: { friends: req.params.friendId } },
         { runValidators: true, new: true }
     )
         .then((user) =>
@@ -68,7 +66,7 @@ router.post('/:userId/friends/:friendId', (req, res) => {
 router.delete('/:userId/friends/:friendId', (req, res) => {
     User.findOneAndUpdate(
         { _id: req.params.userId },
-        { $pull: { friend: { friendId: req.params.friendId } } },
+        { $pull: { friends: { friendId: req.params.friendId } } },
         { runValidators: true, new: true }
     )
         .then((user) =>
