@@ -40,28 +40,32 @@ router.post('/', (req, res) => {
 })
 
 router.put('/:thoughtId', (req, res) => {
-    Thoughts.findByIdAndUpdate(req.params.thoughtId, {
-        $addToSet: { thoughts: req.body }
-    }, { new: true })
+    Thoughts.findByIdAndUpdate(
+        { _id: req.params.thoughtId },
+        { $set: req.body },
+        { runValidators: true, new: true })
         .then(thought => !thought
             ? res.status(404).json({ message: 'No thought with that ID' })
-            : res.json(project)
+            : res.json(thought)
         )
-        .catch((err) => res.status(500).json(err));
-})
+        .catch((err) => {
+            console.log(err);
+            res.status(500).json(err);
+        });
+}),
 
 
-router.delete('/:thoughtId/:userId', (req, res) => {
-    Thoughts.findByIdAndDelete(req.params.thoughtId)
-        .then(thought => {
-            !thought ? res.status(404).json({ message: 'No thoughts with that ID' }) : User.findByIdAndUpdate(req.params.userId, {
-                $pull: { thoughts: req.params.thoughtId }
-            }, { new: true })
-                .then(user => !user
-                    ? res.status(404).json({ message: 'No thoughts with that ID' })
-                    : res.json(user))
-        })
-})
+    router.delete('/:thoughtId/:userId', (req, res) => {
+        Thoughts.findByIdAndDelete(req.params.thoughtId)
+            .then(thought => {
+                !thought ? res.status(404).json({ message: 'No thoughts with that ID' }) : User.findByIdAndUpdate(req.params.userId, {
+                    $pull: { thoughts: req.params.thoughtId }
+                }, { new: true })
+                    .then(user => !user
+                        ? res.status(404).json({ message: 'No thoughts with that ID' })
+                        : res.json(user))
+            })
+    })
 
 // add reaction
 router.post('/:thoughtId/reactions', (req, res) => {

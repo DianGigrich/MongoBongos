@@ -33,6 +33,22 @@ router.post('/', (req, res) => {
         })
 })
 
+// update user
+router.put('/:userId', (req, res) => {
+    User.findByIdAndUpdate(
+        { _id: req.params.userId },
+        { $set: req.body },
+        { runValidators: true, new: true })
+        .then(user => !user
+            ? res.status(404).json({ message: 'No user with that ID' })
+            : res.json(user)
+        )
+        .catch((err) => {
+            console.log(err);
+            res.status(500).json(err);
+        });
+}),
+
 // delete user
 router.delete('/:userId', (req, res) => {
     User.findByIdAndDelete(req.params.userId)
