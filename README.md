@@ -23,14 +23,14 @@ node server.js
 Create a user account to be able to post.  You can add and delete thoughts and reactions and friends.
       
 ## Screenshot:
-![Screenshot of project](./assets/Screenshot.png)
+![Screenshot of project](./assets/screenshot.png)
 
  The following video demonstrates the application functionality:
 
 ![Video demonstrating functionality:](./assets/video.webm) 
 
 ## Credits
-Joe Rehfuss for teaching us. W3Schools, Mozilla, and StackOverflow. Lindsey Fitzgerald for a Mongo tutorial.
+Joe Rehfuss for teaching us. W3Schools, Mozilla, and StackOverflow. Lindsey Fitzgerald for a Mongo tutorial. Austin the TA for some assitance.
 
 
 ## License

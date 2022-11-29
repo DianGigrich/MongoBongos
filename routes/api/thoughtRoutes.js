@@ -1,6 +1,6 @@
 
 const router = require('express').Router();
-const { Thoughts, User } = require('../../models');
+const { Thoughts, User, Reactions } = require('../../models');
 
 router.get('/', (req, res) => {
     Thoughts.find()
@@ -52,20 +52,21 @@ router.put('/:thoughtId', (req, res) => {
             console.log(err);
             res.status(500).json(err);
         });
-}),
+})
 
 
-    router.delete('/:thoughtId/:userId', (req, res) => {
-        Thoughts.findByIdAndDelete(req.params.thoughtId)
-            .then(thought => {
-                !thought ? res.status(404).json({ message: 'No thoughts with that ID' }) : User.findByIdAndUpdate(req.params.userId, {
-                    $pull: { thoughts: req.params.thoughtId }
-                }, { new: true })
-                    .then(user => !user
-                        ? res.status(404).json({ message: 'No thoughts with that ID' })
-                        : res.json(user))
-            })
-    })
+
+router.delete('/:thoughtId/:userId', (req, res) => {
+    Thoughts.findByIdAndDelete(req.params.thoughtId)
+        .then(thought => {
+            !thought ? res.status(404).json({ message: 'No thoughts with that ID' }) : User.findByIdAndUpdate(req.params.userId, {
+                $pull: { thoughts: req.params.thoughtId }
+            }, { new: true })
+                .then(user => !user
+                    ? res.status(404).json({ message: 'No thoughts with that ID' })
+                    : res.json(user))
+        })
+})
 
 // add reaction
 router.post('/:thoughtId/reactions', (req, res) => {
@@ -86,10 +87,10 @@ router.post('/:thoughtId/reactions', (req, res) => {
 )
 
 // delete reaction
-router.delete('/:thoughtId/reactions', (req, res) => {
+router.delete('/:thoughtId/reactions/', (req, res) => {
     Thoughts.findOneAndUpdate(
         { _id: req.params.thoughtId },
-        { $pull: { reactions: { reactionId: req.params.reactionId } } },
+        { $pull: {reactions: {reactionId: req.params.reactionId }}},
         { runValidators: true, new: true }
     )
         .then((thoughts) =>
