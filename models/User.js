@@ -1,7 +1,5 @@
 const { Schema, model } = require('mongoose');
 
-// TODO: UPDATE USER
-
 const userSchema = new Schema({
     username: {
         type: String,
